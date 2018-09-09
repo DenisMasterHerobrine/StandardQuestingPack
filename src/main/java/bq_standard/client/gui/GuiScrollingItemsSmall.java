@@ -12,6 +12,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class GuiScrollingItemsSmall extends GuiScrollingBase<GuiScrollingItemsSmall.ScrollingEntryItem>
@@ -155,23 +156,31 @@ public class GuiScrollingItemsSmall extends GuiScrollingBase<GuiScrollingItemsSm
 				} catch(Exception e){}
 			}
 		}
-		
+
+        @Override
+        public int getHeight()
+        {
+            return 18;
+        }
+
+        @Override
+        public boolean canDrawOutsideBox(boolean isForeground)
+        {
+            return isForeground;
+        }
+
 		@Override
 		public void onMouseClick(int mx, int my, int px, int py, int click, int index)
 		{
 			// JEI/NEI support here
-		}
-
-		@Override
-		public int getHeight()
-		{
-			return 18;
-		}
-
-		@Override
-		public boolean canDrawOutsideBox(boolean isForeground)
-		{
-			return isForeground;
+			if(stack != null && isWithin(mx, my, px + 1, py + 1, 16, 16))
+			{
+			    try {
+                        codechicken.nei.jei.JEIIntegrationManager.openRecipeGui(stack.getBaseStack());
+                }
+                catch (Exception e) {
+                }
+			}
 		}
 	}
 }
